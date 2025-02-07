@@ -232,7 +232,11 @@ class ZKLibTCP {
       } catch (err) {
         reject(err)
       }
-
+      if (!reply) {
+        console.error('Received null or undefined reply from the device.');
+        reject(new Error('No response from the device'));
+        return;
+      }
       const header = decodeTCPHeader(reply.subarray(0, 16))
       switch (header.commandId) {
         case COMMANDS.CMD_DATA: {
